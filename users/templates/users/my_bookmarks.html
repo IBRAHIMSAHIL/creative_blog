@@ -1,0 +1,52 @@
+{% extends 'blog_base.html' %}
+{% block title %}🔖 My Bookmarked Blogs{% endblock %}
+
+{% block content %}
+<div class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-4 gap-2">
+    <h2 class="mb-0">🔖 Bookmarked Posts</h2>
+    <a href="{% url 'blog_list' %}" class="btn btn-outline-primary btn-sm">← Back to Blog List</a>
+</div>
+
+{% if bookmarks %}
+<div class="row g-4">
+    {% for blog in bookmarks %}
+    <div class="col-md-6 col-lg-4">
+        <div class="card h-100 shadow-sm rounded-4 border-0">
+            {% if blog.image %}
+            <img src="{{ blog.image.url }}" class="card-img-top rounded-top-4"
+                style="height: 180px; object-fit: cover;">
+            {% endif %}
+            <div class="card-body d-flex flex-column">
+                <h5 class="card-title fw-semibold">{{ blog.title }}</h5>
+                <p class="text-muted small mb-1">
+                    👤 {{ blog.author.username }} &nbsp;|&nbsp; 🕒 {{ blog.created_at|date:"d M, Y" }}
+                </p>
+                <p class="card-text">{{ blog.content|truncatechars:100 }}</p>
+
+                {% if blog.get_tag_list %}
+                <div class="mt-2">
+                    {% for tag in blog.get_tag_list %}
+                    <span class="badge bg-secondary text-white me-1">#{{ tag }}</span>
+                    {% endfor %}
+                </div>
+                {% endif %}
+
+                <a href="{% url 'blog_detail' blog.pk %}" class="btn btn-outline-primary btn-sm mt-3">Read More</a>
+
+                <!-- 🗑 Remove Bookmark -->
+                <form method="POST" action="{% url 'toggle_bookmark' blog.pk %}" class="mt-2">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-sm btn-outline-danger w-100">🗑 Remove Bookmark</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    {% endfor %}
+</div>
+{% else %}
+<div class="alert alert-info text-center mt-4">
+    You haven’t bookmarked any blog posts yet. <br>Go explore and bookmark your favorites! 🌟
+</div>
+{% endif %}
+{% endblock %}

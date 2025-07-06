@@ -1,0 +1,125 @@
+{% extends 'blog_base.html' %}
+{% block title %}All Blogs{% endblock %}
+
+{% block content %}
+<div class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-4 gap-3">
+    <h2 class="mb-0">📚 Latest Blog Posts</h2>
+    <form method="GET" class="w-100 w-md-auto">
+        <div class="input-group">
+            <input type="text" name="q" placeholder="Search blogs..." value="{{ query|default:'' }}"
+                class="form-control">
+            <button class="btn btn-outline-secondary" type="submit">Search</button>
+        </div>
+    </form>
+    {% if user.is_authenticated %}
+    <a href="{% url 'blog_create' %}" class="btn btn-primary">+ New Post</a>
+    {% endif %}
+</div>
+
+<!-- Toggle Button for Mobile -->
+<button class="btn btn-outline-dark d-lg-none mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#sidebar">
+    ☰ Filter by Tag
+</button>
+
+<!-- Sidebar Collapse -->
+<div class="row">
+    <!-- Sidebar -->
+    <!-- Sidebar -->
+    <div class="col-lg-3 mb-4 collapse d-lg-block" id="sidebar">
+        <div class="card shadow-sm">
+            <div class="card-header fw-semibold">🏷 Popular Tags</div>
+            <div class="card-body">
+                {% for tag in all_tags %}
+                <a href="?tag={{ tag|urlencode }}"
+                    class="badge {% if tag == tag_filter %}bg-primary text-white{% else %}bg-secondary text-white{% endif %} me-1 mb-1 text-decoration-none">
+                    {{ tag }}
+                </a>
+                {% empty %}
+                <span class="text-muted small">No tags available</span>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Blog Posts Section -->
+    <div class="col-lg-9">
+
+        <!-- Filter Status / Clear Filter -->
+        {% if query or tag_filter %}
+        <div class="mb-3 d-flex justify-content-between align-items-center">
+            <span class="badge bg-info text-dark p-2">
+                {% if query %}🔍 Search: "{{ query }}"{% endif %}
+                {% if query and tag_filter %} &nbsp;|&nbsp; {% endif %}
+                {% if tag_filter %}🏷 Tag: "{{ tag_filter }}"{% endif %}
+            </span>
+            <a href="{% url 'blog_list' %}" class="btn btn-sm btn-outline-secondary">Clear filters</a>
+        </div>
+        {% endif %}
+
+        {% if blogs %}
+        <div class="row g-4">
+            {% for blog in blogs %}
+            <div class="col-12 col-sm-6 col-lg-4">
+                <div class="card h-100 border-0 shadow-sm rounded-4">
+                    {% if blog.image %}
+                    <img src="{{ blog.image.url }}" class="card-img-top rounded-top-4"
+                        style="height: 180px; object-fit: cover;">
+                    {% endif %}
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title fw-semibold">{{ blog.title }}</h5>
+                        <p class="text-muted small mb-1">👤 {{ blog.author.username }} &nbsp;|&nbsp; 🕒 {{
+                            blog.created_at|date:"d M, Y" }} &nbsp;|&nbsp; 👁️ {{ blog.views }}</p>
+                        <p class="card-text">{{ blog.content|truncatechars:100 }}</p>
+
+                        {% if blog.get_tag_list %}
+                        <div class="mt-2">
+                            {% for tag in blog.get_tag_list %}
+                            <a href="?tag={{ tag|urlencode }}"
+                                class="badge bg-secondary text-white me-1 mb-1 text-decoration-none">
+                                {{ tag }}
+                            </a>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+
+                        <a href="{% url 'blog_detail' blog.pk %}"
+                            class="btn btn-outline-primary btn-sm mt-auto mt-3">Read More</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        {% else %}
+        <p class="text-muted">No blog posts found.</p>
+        {% endif %}
+
+        <!-- Pagination -->
+        <nav class="mt-5">
+            <ul class="pagination justify-content-center">
+                {% if blogs.has_previous %}
+                <li class="page-item">
+                    <a class="page-link"
+                        href="?{% if query %}q={{ query }}&{% endif %}{% if tag_filter %}tag={{ tag_filter }}&{% endif %}page={{ blogs.previous_page_number }}">
+                        Previous
+                    </a>
+                </li>
+                {% endif %}
+
+                <li class="page-item disabled">
+                    <span class="page-link">Page {{ blogs.number }} of {{ blogs.paginator.num_pages }}</span>
+                </li>
+
+                {% if blogs.has_next %}
+                <li class="page-item">
+                    <a class="page-link"
+                        href="?{% if query %}q={{ query }}&{% endif %}{% if tag_filter %}tag={{ tag_filter }}&{% endif %}page={{ blogs.next_page_number }}">
+                        Next
+                    </a>
+                </li>
+                {% endif %}
+            </ul>
+        </nav>
+    </div>
+</div>
+{% endblock %}

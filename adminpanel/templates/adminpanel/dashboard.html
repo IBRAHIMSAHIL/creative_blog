@@ -1,0 +1,132 @@
+{% extends 'blog_base.html' %}
+{% load static %}
+
+{% block title %}Admin Dashboard{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+
+    <!-- 🔰 Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3 fw-bold">🛡️ Admin Dashboard</h1>
+    </div>
+
+    <!-- 📊 Summary Cards -->
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <div class="card text-white bg-primary shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">👥 Total Users</h5>
+                    <p class="display-6 fw-bold">{{ total_users }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-white bg-success shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">📝 Total Blog Posts</h5>
+                    <p class="display-6 fw-bold">{{ total_posts }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-white bg-info shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">💬 Total Comments</h5>
+                    <p class="display-6 fw-bold">{{ total_comments }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 👥 Recent Users -->
+    <div class="card mb-4 shadow-sm">
+        <div class="card-header fw-semibold">👥 Recently Registered Users</div>
+        <div class="card-body table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>Username</th>
+                        <th>Email</th>
+                        <th>Joined On</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in recent_users %}
+                    <tr>
+                        <td>{{ user.username }}</td>
+                        <td>{{ user.email }}</td>
+                        <td>{{ user.date_joined|date:"d M, Y H:i" }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="3" class="text-muted">No recent users.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- 📝 Recent Blog Posts -->
+    <div class="card mb-4 shadow-sm">
+        <div class="card-header fw-semibold">📝 Recent Blog Posts</div>
+        <div class="card-body table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>Title</th>
+                        <th>Author</th>
+                        <th>Posted On</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for post in recent_posts %}
+                    <tr>
+                        <td><a href="{% url 'blog_detail' post.pk %}">{{ post.title|truncatechars:30 }}</a></td>
+                        <td>{{ post.author.username }}</td>
+                        <td>{{ post.created_at|date:"d M, Y H:i" }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="3" class="text-muted">No recent posts.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- 📈 Monthly Blog Posts Chart -->
+    <div class="card my-4 shadow-sm">
+        <div class="card-header fw-semibold">📈 Monthly Blog Posts</div>
+        <div class="card-body">
+            <canvas id="postsChart" height="100"></canvas>
+        </div>
+    </div>
+
+    <!-- 🏷️ Top Tags -->
+    <div class="card mb-4 shadow-sm">
+        <div class="card-header fw-semibold">🏷️ Top Tags</div>
+        <div class="card-body">
+            {% for tag, count in top_tags %}
+            <span class="badge bg-secondary text-white me-1 mb-1">
+                #{{ tag }} <small>({{ count }})</small>
+            </span>
+            {% empty %}
+            <p class="text-muted">No tags available.</p>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- 💡 Quote of the Day -->
+    <div class="alert alert-light border-start border-4 border-primary shadow-sm">
+        <blockquote class="mb-0 fst-italic">“{{ quote }}”</blockquote>
+    </div>
+
+</div>
+
+<!-- JSON data for chart.js -->
+{{ monthly_posts|json_script:"monthsData" }}
+
+{% endblock %}

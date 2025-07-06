@@ -1,0 +1,69 @@
+body {
+            font-family: 'Montserrat', sans-serif;
+            background: #f8fafc;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .navbar-brand {
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+        .sidebar {
+            min-width: 220px;
+            max-width: 220px;
+            background: #212529;
+            color: #fff;
+            min-height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding-top: 70px;
+            box-shadow: 2px 0 8px rgba(0,0,0,0.05);
+            z-index: 1030;
+        }
+        .sidebar .nav-link {
+            color: #adb5bd;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        .sidebar .nav-link.active, .sidebar .nav-link:hover {
+            color: #fff;
+            background: #343a40;
+            border-radius: 6px;
+        }
+        .sidebar .nav-icon {
+            margin-right: 10px;
+        }
+        .main-content {
+            margin-left: 220px;
+            padding-top: 80px;
+            flex: 1 1 auto;
+        }
+        @media (max-width: 991.98px) {
+            .sidebar {
+                position: static;
+                min-width: 100%;
+                max-width: 100%;
+                min-height: auto;
+                padding-top: 0;
+                box-shadow: none;
+            }
+            .main-content {
+                margin-left: 0;
+                padding-top: 100px;
+            }
+        }
+        footer {
+            background: #212529;
+            color: #adb5bd;
+            letter-spacing: 0.5px;
+        }
+
+        .card-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+
+        

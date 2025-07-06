@@ -1,0 +1,12 @@
+{% extends 'blog_base.html' %}
+{% load crispy_forms_tags %}
+{% block title %}Edit Comment{% endblock %}
+
+{% block content %}
+<h3>Edit Your Comment</h3>
+<form method="POST">
+    {% csrf_token %}
+    {{ form|crispy }}
+    <button class="btn btn-warning">Update</button>
+</form>
+{% endblock %}
