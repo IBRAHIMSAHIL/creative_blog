@@ -3,6 +3,16 @@ body {
             min-height: 100vh;
         }
 
+
+        .brand-text {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: white !important;
+            display: inline !important;
+        }
+
+
+
         .profile-card {
             background: #fff;
             border-radius: 1rem;
