@@ -16,24 +16,30 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{% static 'assets/css/blog.css' %}">
 
-    <!-- Custom Js -->
-
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 </head>
 
 <body class="bg-light" style="padding-top: 60px;">
-    <!-- Navigation Bar -->
+
+    <!-- 🌐 Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top shadow-sm py-2">
         <div class="container-fluid">
-            <a class="navbar-brand d-flex align-items-center" href="/">
+            <!-- ✅ Always visible brand -->
+            <a class="navbar-brand d-flex align-items-center" href="{% url 'blog_list' %}">
                 <svg width="28" height="28" fill="currentColor" class="me-2" viewBox="0 0 16 16">
                     <path d="M8 0a8 8 0 1 0 8 8A8 8 0 0 0 8 0zm0 15A7 7 0 1 1 15 8 7 7 0 0 1 8 15z" />
                     <path d="M11.5 8a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0z" />
                 </svg>
                 Creative Blog
             </a>
+
+            <!-- ☰ Mobile Toggle -->
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavMain">
                 <span class="navbar-toggler-icon"></span>
             </button>
+
+            <!-- 👤 Navigation Links -->
             <div class="collapse navbar-collapse" id="navbarNavMain">
                 <ul class="navbar-nav ms-auto align-items-center gap-2">
                     {% if user.is_authenticated %}
@@ -43,7 +49,8 @@
                     <li class="nav-item">
                         <form action="{% url 'logout' %}" method="POST" class="d-inline m-0">
                             {% csrf_token %}
-                            <button class="nav-link btn btn-link text-white px-0" style="text-decoration: none;">
+                            <button type="submit" class="nav-link btn btn-link text-white px-0"
+                                style="text-decoration: none;">
                                 <i class="bi bi-box-arrow-right"></i> Logout
                             </button>
                         </form>
@@ -57,15 +64,13 @@
                     </li>
                     {% endif %}
                 </ul>
-
             </div>
         </div>
     </nav>
 
-    <!-- Sidebar -->
+    <!-- 📌 Sidebar -->
     <div class="sidebar d-none d-lg-block">
         <nav class="nav flex-column px-3">
-
             <hr class="bg-secondary">
             <a class="nav-link" href="https://github.com/" target="_blank">
                 <span class="nav-icon"><i class="bi bi-github"></i></span> GitHub
@@ -73,7 +78,7 @@
         </nav>
     </div>
 
-    <!-- Flash Messages -->
+    <!-- 🔔 Flash Messages -->
     <div class="main-content">
         <div class="container">
             {% if messages %}
@@ -86,23 +91,20 @@
             {% endif %}
         </div>
 
-        <!-- Page Content -->
+        <!-- 📄 Page Content -->
         <main class="container py-4">
             {% block content %}{% endblock %}
         </main>
     </div>
 
+    <!-- 🧾 Footer -->
     <footer class="text-center py-4 mt-auto">
         &copy; {{ now|date:"Y" }} Creative Blog &mdash; Made with <span style="color:#e25555;">&#10084;</span>
     </footer>
 
-    <!-- Bootstrap 5 Script -->
+    <!-- JS Libraries -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-    <!-- Bootstrap Icons CDN -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-    <!-- Your blog.js script (corrected) -->
     <script src="{% static 'assets/js/blog.js' %}" defer></script>
 
 </body>
