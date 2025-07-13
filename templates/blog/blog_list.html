@@ -67,8 +67,9 @@
                     {% endif %}
                     <div class="card-body d-flex flex-column">
                         <h5 class="card-title fw-semibold">{{ blog.title }}</h5>
-                        <p class="text-muted small mb-1">👤 {{ blog.author.username }} &nbsp;|&nbsp; 🕒 {{
-                            blog.created_at|date:"d M, Y" }} &nbsp;|&nbsp; 👁️ {{ blog.views }}</p>
+                        <p class="text-muted small mb-1">👤
+                            {{ blog.author.username }} &nbsp;|&nbsp; 🕒 {{ blog.created_at|date:"d M, Y" }}
+                            &nbsp;|&nbsp; 👁️ {{ blog.views }}</p>
                         <p class="card-text">{{ blog.content|truncatechars:100 }}</p>
 
                         {% if blog.get_tag_list %}
