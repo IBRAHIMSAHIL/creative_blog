@@ -1,3 +1,4 @@
+from collections import Counter
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user_model
 from django.shortcuts import render, redirect
@@ -5,7 +6,6 @@ from django.contrib import messages
 from django.db.models.functions import TruncMonth
 from django.db.models import Count
 from blog.models import BlogPost, Comment
-from collections import Counter
 
 User = get_user_model()
 
