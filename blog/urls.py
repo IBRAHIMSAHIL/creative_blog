@@ -11,7 +11,7 @@ urlpatterns = [
          views.comment_edit, name='comment_edit'),
     path('comment/<int:comment_id>/delete/',
          views.comment_delete, name='comment_delete'),
-    path('admin-panel/', views.admin_dashboard, name='admin_dashboard'),
+    path('admin-panel/', views.admin_dashboard, name='blog_admin_dashboard'),
     path('admin-panel/user/<int:user_id>/toggle/',
          views.toggle_user_status, name='toggle_user_status'),
     path('admin-panel/post/<int:post_id>/delete/',

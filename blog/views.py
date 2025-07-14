@@ -176,7 +176,7 @@ def toggle_user_status(request, user_id):
         user.save()
         messages.success(
             request, f"User {'unblocked' if user.is_active else 'blocked'} successfully.")
-    return redirect('admin_dashboard')
+    return redirect('blog_admin_dashboard')
 
 
 @staff_member_required
@@ -185,7 +185,7 @@ def delete_post_admin(request, post_id):
     post = get_object_or_404(BlogPost, id=post_id)
     post.delete()
     messages.success(request, "Post deleted successfully.")
-    return redirect('admin_dashboard')
+    return redirect('blog_admin_dashboard')
 
 
 @staff_member_required
@@ -194,7 +194,7 @@ def delete_comment_admin(request, comment_id):
     comment = get_object_or_404(Comment, id=comment_id)
     comment.delete()
     messages.success(request, "Comment deleted successfully.")
-    return redirect('admin_dashboard')
+    return redirect('blog_admin_dashboard')
 
 
 @login_required
